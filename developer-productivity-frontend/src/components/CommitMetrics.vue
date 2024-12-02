@@ -30,7 +30,7 @@ export default {
         async fetchCommits() {
             try {
                 const response = await axios.get(
-                    `https://developer-productivity-le45ggh1l-medhanshs-projects.vercel.app/api/index`,
+                    `https://developer-productivity-backend-55u20yg16-medhanshs-projects.vercel.app/api/index`,
                     {
                         params: { owner: this.owner, repo: this.repo },
                     }
