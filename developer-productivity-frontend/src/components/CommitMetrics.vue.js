@@ -10,7 +10,7 @@ export default (await import('vue')).defineComponent({
     methods: {
         async fetchCommits() {
             try {
-                const response = await axios.get(`https://backend-ktgyu2kr6-medhanshs-projects.vercel.app/api/index`, {
+                const response = await axios.get(`https://backend-ctg5pj7l4-medhanshs-projects.vercel.app/api/index`, {
                     params: { owner: this.owner, repo: this.repo },
                 });
                 this.commits = response.data;
