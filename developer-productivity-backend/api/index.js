@@ -1,33 +1,18 @@
-const express = require('express'); // Import Express
-const app = express(); // Initialize Express
-const PORT = 4000; // Define the port
 const axios = require('axios');
 
-// Define a sample route
-app.get('/', (req, res) => {
-    res.send('Hello, Developer Productivity Dashboard!');
-});
-
-// Start the server
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
-
-module.exports = async (req, res) => {
+const fetchCommits = async (owner, repo) => {
     try {
-        const { owner, repo } = req.query; // Pass owner and repo via query params
-        const response = await axios.get(
-            `https://api.github.com/repos/${owner}/${repo}/commits`,
-            {
-                headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` },
-            }
-        );
-        const commitData = response.data.map(commit => ({
-            message: commit.commit.message,
-            author: commit.commit.author.name,
-            date: commit.commit.author.date,
-        }));
-        res.status(200).json(commitData);
+        console.log('GitHub Token:', process.env.GITHUB_TOKEN); // Debug log
+        const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/commits`, {
+            headers: {
+                Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+            },
+        });
+        console.log('Response:', response.data); // Debug log
+        return response.data;
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to fetch commit data' });
+        console.error('Error fetching commits:', error.response?.data || error.message);
     }
 };
+
+fetchCommits('octocat', 'Hello-World');
