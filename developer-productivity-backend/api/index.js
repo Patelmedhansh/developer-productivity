@@ -3,7 +3,16 @@ const axios = require('axios');
 require('dotenv').config(); // Load environment variables from .env file
 
 const app = express();
-const PORT = 4000; // Use port 4000 for local testing
+const PORT = process.env.PORT || 4000; // Use PORT provided by Vercel or default to 4000
+
+// Middleware to bypass authentication for public routes
+app.use((req, res, next) => {
+    if (req.path.startsWith('/api/index')) {
+        return next(); // Skip authentication for this route
+    }
+    // You can add any global authentication logic here if needed
+    next();
+});
 
 // Root route for a friendly message
 app.get('/', (req, res) => {
@@ -49,3 +58,5 @@ app.get('/api/index', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Backend server running at http://localhost:${PORT}`);
 });
+
+module.exports = app; // Export app for serverless deployment
